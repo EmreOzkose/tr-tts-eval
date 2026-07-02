@@ -216,3 +216,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# -----------------------------
+*.csv
+__pycache__
+model_cache
+*.pyc
+TtsEval_alperen
+yunusemre
+realData
+results
+api_keys.py
