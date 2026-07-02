@@ -9,7 +9,7 @@ asteroid-filterbanks==0.4.0
 async-timeout==5.0.1
 attrs==26.1.0
 audiobox_aesthetics==0.0.4
-brouhaha @ file:///mnt/local3/tts/tts_evaluation/methods/brouhaha-vad
+brouhaha 
 certifi==2026.4.22
 cffi==2.0.0
 charset-normalizer==3.4.7
