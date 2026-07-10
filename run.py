@@ -5,7 +5,7 @@ from tqdm import tqdm
 from pathlib import Path
 from utils import is_better, suppress_noisy_logs, GREEN, RESET
 
-sys.path.insert(0, "/mnt/local3/tts/tts_evaluation/methods/ttsds/src")
+sys.path.insert(0, "methods/ttsds/src")
 
 import numpy as np
 if not hasattr(np, 'NaN'):
@@ -16,17 +16,8 @@ suppress_noisy_logs()
 
 if __name__ == "__main__":
 
-    # ======================== CONFIGURATION ========================
-    # folder = "/mnt/local3/tts/tts_evaluation/data/mini-cosy-test"
-    # folder = "/mnt/local3/tts/tts_evaluation/data/canadian"
-    # folder = "/mnt/local3/tts/tts_evaluation/data/najdi_synth_sestek_elevenlabs"
-    # folder = "/mnt/local3/tts/tts_evaluation/data/ur_vits_cosy_improved-v2"
-    # folder = "/mnt/local3/tts/tts_evaluation/data/tts_evaluation_test"
-    folder = "/mnt/local3/tts/tts_evaluation/data/gozde"
-    # speaker_similarity_reference_folder = "/mnt/local3/tts/tts_evaluation/data/mini-cosy-test-ref"
-    # speaker_similarity_reference_folder = "/mnt/local3/tts/tts_evaluation/data/canadian-ref"
-    # speaker_similarity_reference_folder = "/mnt/local3/tts/tts_evaluation/data/ur_vits_cosy_improved-v2-spk-ref"
-    # speaker_similarity_reference_folder = "/mnt/local3/tts/tts_evaluation/data/tts_evaluation_test_ref"
+
+    folder = "data/gozde"
     multi_input_folder_flag = True
     metric_list = [
         "audiobox_pq",
@@ -52,12 +43,10 @@ if __name__ == "__main__":
         # "natscore",
         "speechlmscore",
     ]
-    metric_list = ["natscore"]
-    # ref istemeyen metrikler
+
     metric_list = ["audiobox_pq", "brouhaha", "dnsmos_pro", "utmos_v2", "whisqa"]
-    # save_path = "results.csv"
     save_path = "results_" + Path(folder).name + ".csv"
-    # save_path = None
+
     # =============================================================
     
     assert len(metric_list) > 0, "At least one metric must be specified"
@@ -66,7 +55,6 @@ if __name__ == "__main__":
     input_files = {}
     if multi_input_folder_flag:
         for file in Path(folder).glob("**/*.wav"):
-            # if file.parent.name not in ["voxcpm_trendyol"]: continue
             if file.parent.name not in input_files:
                 input_files[file.parent.name] = []
             input_files[file.parent.name].append(str(file))
@@ -155,7 +143,7 @@ if __name__ == "__main__":
 
             metric_funcs[metric] = WhiSQA(
                 model_type="single",
-                checkpoints_dir="/mnt/local3/tts/tts_evaluation/methods/WhiSQA/checkpoints",
+                checkpoints_dir="methods/WhiSQA/checkpoints",
             )
         elif metric == "natscore":
             if natscore_model is None:

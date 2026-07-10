@@ -31,7 +31,7 @@ class NatScoreMetric:
             except ImportError as exc:
                 raise ImportError(
                     "NatScore is not importable. Install with: "
-                    "pip install -e '/mnt/local3/tts/tts_evaluation/methods/natscore[dev]'"
+                    "pip install -e 'methods/natscore[dev]'"
                 ) from exc
 
         self._scorer = ns.load(self.model_id, device=self.device)
