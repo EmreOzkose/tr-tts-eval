@@ -127,6 +127,7 @@ wespeaker
 transformers
 utmosv2
 ipython
+ttsds
 
 whisperx
 
