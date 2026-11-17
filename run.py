@@ -15,11 +15,9 @@ suppress_noisy_logs()
 
 
 if __name__ == "__main__":
+    import argparse
 
-
-    folder = "data/gozde"
-    multi_input_folder_flag = True
-    metric_list = [
+    default_metric_list = [
         "audiobox_pq",
         "brouhaha",
         "dnsmos_pro",
@@ -44,8 +42,29 @@ if __name__ == "__main__":
         "speechlmscore",
     ]
 
-    metric_list = ["audiobox_pq", "brouhaha", "dnsmos_pro", "utmos_v2", "whisqa"]
-    save_path = "results_" + Path(folder).name + ".csv"
+    parser = argparse.ArgumentParser(description="Run objective TTS metrics on folders of .wav files.")
+    parser.add_argument("--data", required=True,
+                        help="Input folder. By default each subfolder (e.g. one per TTS system) is evaluated separately.")
+    parser.add_argument("--ref", default=None,
+                        help="Reference folder with the same subfolder names as --data. "
+                             "Required for speaker_similarity, ttsds and scoreq_*_ref.")
+    parser.add_argument("--metrics", nargs="+", default=default_metric_list,
+                        help="Metrics to run (default: all metrics used in the paper).")
+    parser.add_argument("--out", default=None,
+                        help="Output CSV path prefix (default: results_<data folder name>.csv).")
+    parser.add_argument("--single-folder", action="store_true",
+                        help="Treat --data as a single system: use only the .wav files directly inside it.")
+    args = parser.parse_args()
+
+    folder = args.data
+    multi_input_folder_flag = not args.single_folder
+    metric_list = args.metrics
+    speaker_similarity_reference_folder = args.ref
+    save_path = args.out or "results_" + Path(folder).name + ".csv"
+
+    needs_ref = [m for m in metric_list if m in ("speaker_similarity", "ttsds") or (m.startswith("scoreq_") and m.endswith("_ref"))]
+    if needs_ref and speaker_similarity_reference_folder is None:
+        parser.error(f"--ref is required for metrics: {', '.join(needs_ref)}")
 
     # =============================================================
     

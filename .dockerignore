@@ -1,0 +1,13 @@
+# Allowlist: exclude everything, then include only what the pipeline needs.
+# This keeps local secrets (e.g. api_keys.py), caches, results and data out of the image.
+*
+!run.py
+!utils.py
+!metrics/
+!README.md
+!LICENSE
+!description.md
+
+# Never ship bytecode caches (they can contain values from local files).
+**/__pycache__
+**/*.pyc
